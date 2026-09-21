@@ -1,0 +1,72 @@
+// AUTH + OPS — free dbdiagram.io
+
+Table User {
+  id String [pk]
+  email String [unique]
+  username String [unique]
+  displayName String
+  role String
+  isBanned Boolean
+}
+
+Table Session {
+  id String [pk]
+  userId String [ref: > User.id]
+  expiresAt DateTime
+}
+
+Table TournamentAdminApplication {
+  id String [pk]
+  userId String [ref: > User.id]
+  message String
+  status String
+  reviewedBy String [ref: > User.id]
+}
+
+Table Event {
+  id String [pk]
+  slug String [unique]
+  name String
+  status String
+}
+
+Table EventOrganizer {
+  id String [pk]
+  eventId String [ref: > Event.id]
+  userId String [ref: > User.id]
+  role String
+}
+
+Table EventSubmission {
+  id String [pk]
+  eventId String [ref: > Event.id]
+  authorId String [ref: > User.id]
+  title String
+  type String
+  status String
+  reviewerId String [ref: > User.id]
+}
+
+Table StaffMessage {
+  id String [pk]
+  body String
+  fromUserId String [ref: > User.id]
+  submissionId String [ref: > EventSubmission.id]
+  applicationId String [ref: > TournamentAdminApplication.id]
+}
+
+Table Match {
+  id String [pk]
+  slug String [unique]
+  eventId String [ref: > Event.id]
+  status String
+  gsiToken String [unique]
+}
+
+Table MatchDemo {
+  id String [pk]
+  matchId String [ref: > Match.id]
+  storagePath String
+  status String
+  uploadedById String [ref: > User.id]
+}

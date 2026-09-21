@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>ByHLTV — Спасибо за просмотр</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Sora:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b0b0b;
+      --bg2: #121212;
+      --green: #8BB41A;
+      --text: #ececec;
+      --muted: #8a8a8a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #000;
+      font-family: Sora, system-ui, sans-serif;
+      color: var(--text);
+    }
+    .slide {
+      width: 1920px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 90% 70% at 50% 40%, #1a1a1a 0%, transparent 55%),
+        linear-gradient(160deg, #121212 0%, #0b0b0b 55%, #080808 100%);
+    }
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(139, 180, 26, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139, 180, 26, 0.04) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 20%, transparent 75%);
+      pointer-events: none;
+    }
+    .slide::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 8px;
+      background: var(--green);
+      box-shadow: 0 0 40px color-mix(in srgb, var(--green) 45%, transparent);
+    }
+    .frame {
+      position: absolute;
+      inset: 48px;
+      border: 1px solid rgba(139, 180, 26, 0.18);
+      pointer-events: none;
+    }
+    .frame::before,
+    .frame::after {
+      content: "";
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      border: 2px solid var(--green);
+    }
+    .frame::before {
+      top: -1px;
+      left: -1px;
+      border-right: none;
+      border-bottom: none;
+    }
+    .frame::after {
+      bottom: -1px;
+      right: -1px;
+      border-left: none;
+      border-top: none;
+    }
+    .brand {
+      position: absolute;
+      top: 72px;
+      left: 96px;
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--green);
+    }
+    .role-tag {
+      position: absolute;
+      top: 72px;
+      right: 96px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid #2a2a2a;
+      padding: 10px 16px;
+    }
+    .center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px;
+      z-index: 2;
+    }
+    .kicker {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 28px;
+    }
+    h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 700;
+      font-size: 96px;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      color: #f2f2f2;
+      max-width: 1600px;
+    }
+    .sub {
+      margin-top: 36px;
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: #c8c8c8;
+    }
+    .rule {
+      width: 120px;
+      height: 3px;
+      background: var(--green);
+      margin: 28px auto 0;
+    }
+    .cta {
+      margin-top: 40px;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .footer {
+      position: absolute;
+      left: 96px;
+      right: 96px;
+      bottom: 64px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #666;
+      z-index: 2;
+    }
+    .footer b { color: var(--green); font-weight: 600; }
+    .glow {
+      position: absolute;
+      width: 720px;
+      height: 720px;
+      border-radius: 50%;
+      background: radial-gradient(circle, color-mix(in srgb, var(--green) 16%, transparent) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -52%);
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide" id="99-thanks" data-file="99-thanks.png">
+    <div class="glow"></div>
+    <div class="frame"></div>
+    <div class="brand">ByHLTV</div>
+    <div class="role-tag">Конец · Thanks</div>
+    <div class="center">
+      <div class="kicker">Конец презентации</div>
+      <h1>Спасибо<br />за просмотр</h1>
+      <div class="rule"></div>
+      <div class="sub">ByHLTV · Беларускі Counter-Strike</div>
+      <div class="cta">Вопросы? Давайте обсудим</div>
+    </div>
+    <div class="footer"><span>End slide</span><span><b>THANKS</b> · ByHLTV</span></div>
+  </div>
+</body>
+</html>

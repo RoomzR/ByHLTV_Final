@@ -1,0 +1,87 @@
+// CORE ONLY — use this for the main slide (free dbdiagram.io)
+// Team / Player / Event / Match / Demo / Stats
+
+Table Team {
+  id String [pk]
+  slug String [unique]
+  name String
+  shortName String
+  logo String
+  ranking Int
+  points Int
+}
+
+Table Player {
+  id String [pk]
+  slug String [unique]
+  nickname String
+  teamId String [ref: > Team.id]
+  photoUrl String
+  steamId String [unique]
+  rating Float
+  kd Float
+  adr Float
+  kast Float
+  mapsPlayed Int
+}
+
+Table Event {
+  id String [pk]
+  slug String [unique]
+  name String
+  startDate DateTime
+  endDate DateTime
+  prizePool Int
+  status String
+}
+
+Table EventTeam {
+  id String [pk]
+  eventId String [ref: > Event.id]
+  teamId String [ref: > Team.id]
+  seed Int
+}
+
+Table Match {
+  id String [pk]
+  slug String [unique]
+  eventId String [ref: > Event.id]
+  team1Id String [ref: > Team.id]
+  team2Id String [ref: > Team.id]
+  status String
+  format String
+  scheduledAt DateTime
+  team1Score Int
+  team2Score Int
+  gsiToken String [unique]
+}
+
+Table MatchMap {
+  id String [pk]
+  matchId String [ref: > Match.id]
+  mapName String
+  team1Score Int
+  team2Score Int
+  order_ Int
+}
+
+Table MatchDemo {
+  id String [pk]
+  matchId String [ref: > Match.id]
+  mapName String
+  storagePath String
+  status String
+}
+
+Table PlayerMatchStat {
+  id String [pk]
+  matchId String [ref: > Match.id]
+  playerId String [ref: > Player.id]
+  mapName String
+  kills Int
+  deaths Int
+  assists Int
+  adr Float
+  rating Float
+  kast Float
+}

@@ -1,0 +1,23 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360">
+  <defs>
+    <linearGradient id="bg" x1="20%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a1f14"/>
+      <stop offset="50%" stop-color="#14532d"/>
+      <stop offset="100%" stop-color="#052e1a"/>
+    </linearGradient>
+    <radialGradient id="canopy" cx="50%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#22c55e" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#14532d" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <rect width="640" height="360" fill="url(#canopy)"/>
+  <g stroke="#5eead4" stroke-opacity="0.1" fill="none">
+    <circle cx="320" cy="180" r="50"/><circle cx="320" cy="180" r="100"/><circle cx="320" cy="180" r="150"/>
+    <path d="M0 180 H640 M320 0 V360"/>
+  </g>
+  <path d="M120 320 L180 100 L220 200 L280 60 L340 180 L400 90 L460 240 L520 120" stroke="#78716c" stroke-width="2" fill="none" opacity="0.3"/>
+  <ellipse cx="200" cy="280" rx="90" ry="30" fill="#0f766e" opacity="0.2"/>
+  <text x="320" y="195" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="48" font-weight="900" fill="#86efac" letter-spacing="5">ANCIENT</text>
+  <text x="320" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#5eead4" letter-spacing="3" opacity="0.75">JUNGLE TEMPLE</text>
+</svg>

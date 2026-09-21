@@ -1,0 +1,399 @@
+// ByHLTV — FREE dbdiagram.io (no Table Groups / paid features)
+// https://dbdiagram.io → Import
+//
+// For a cleaner slide: use the smaller files in docs/erd/
+//   erd-core.dbml      = scene + matches (show this first)
+//   erd-ops.dbml       = auth + TO workflow
+//   erd-cms-ads.dbml   = news/forum/gallery + ads/fantasy
+
+// ----- AUTH -----
+Table User {
+  id String [pk]
+  email String [unique]
+  username String [unique]
+  passwordHash String
+  displayName String
+  avatarUrl String
+  role String // USER EDITOR MOD TO ADMIN SUPERADMIN
+  isBanned Boolean
+  bannedUntil DateTime
+  createdAt DateTime
+}
+
+Table Session {
+  id String [pk]
+  userId String [ref: > User.id]
+  refreshTokenHash String
+  expiresAt DateTime
+}
+
+// ----- SCENE -----
+Table Team {
+  id String [pk]
+  slug String [unique]
+  name String
+  shortName String
+  logo String
+  region String
+  ranking Int
+  points Int
+}
+
+Table Player {
+  id String [pk]
+  slug String [unique]
+  nickname String
+  realName String
+  teamId String [ref: > Team.id]
+  role String
+  photoUrl String
+  steamId String [unique]
+  status String
+  rating Float
+  rating21 Float
+  rating30 Float
+  kd Float
+  adr Float
+  kast Float
+  mapsPlayed Int
+}
+
+Table PlayerTeamHistory {
+  id String [pk]
+  playerId String [ref: > Player.id]
+  teamId String [ref: > Team.id]
+  joinedAt DateTime
+  leftAt DateTime
+}
+
+Table SceneAward {
+  id String [pk]
+  kind String // MVP EVP TOP20 HALL_OF_FAME
+  year Int
+  rank Int
+  playerId String [ref: > Player.id]
+  eventId String [ref: > Event.id]
+}
+
+Table RankingSnapshot {
+  id String [pk]
+  kind String // team | player
+  teamId String [ref: > Team.id]
+  playerId String [ref: > Player.id]
+  rank Int
+  points Float
+  rating Float
+  createdAt DateTime
+}
+
+// ----- COMPETITION -----
+Table Event {
+  id String [pk]
+  slug String [unique]
+  name String
+  location String
+  startDate DateTime
+  endDate DateTime
+  prizePool Int
+  status String
+  coverImage String
+}
+
+Table EventTeam {
+  id String [pk]
+  eventId String [ref: > Event.id]
+  teamId String [ref: > Team.id]
+  seed Int
+}
+
+Table BracketNode {
+  id String [pk]
+  eventId String [ref: > Event.id]
+  round String
+  position Int
+  matchId String [ref: - Match.id]
+}
+
+Table Match {
+  id String [pk]
+  slug String [unique]
+  eventId String [ref: > Event.id]
+  team1Id String [ref: > Team.id]
+  team2Id String [ref: > Team.id]
+  status String // UPCOMING LIVE FINISHED
+  format String
+  scheduledAt DateTime
+  team1Score Int
+  team2Score Int
+  gsiToken String [unique]
+  streamUrl String
+}
+
+Table MatchMap {
+  id String [pk]
+  matchId String [ref: > Match.id]
+  mapName String
+  team1Score Int
+  team2Score Int
+  order_ Int [name: "order"]
+}
+
+Table MapVeto {
+  id String [pk]
+  matchId String [ref: > Match.id]
+  action String
+  mapName String
+  order_ Int [name: "order"]
+}
+
+Table MatchRound {
+  id String [pk]
+  matchId String [ref: > Match.id]
+  mapNumber Int
+  roundNumber Int
+  winnerSide String
+  team1Score Int
+  team2Score Int
+}
+
+Table MatchEvent {
+  id String [pk]
+  matchId String [ref: > Match.id]
+  type String
+  playerId String [ref: > Player.id]
+  payload String
+  createdAt DateTime
+}
+
+Table MatchDemo {
+  id String [pk]
+  matchId String [ref: > Match.id]
+  mapName String
+  storagePath String
+  status String // PENDING PROCESSING READY FAILED
+  uploadedById String [ref: > User.id]
+}
+
+Table PlayerMatchStat {
+  id String [pk]
+  matchId String [ref: > Match.id]
+  playerId String [ref: > Player.id]
+  mapName String
+  kills Int
+  deaths Int
+  assists Int
+  adr Float
+  rating Float
+  rating21 Float
+  rating30 Float
+  kast Float
+  roundsPlayed Int
+}
+
+// ----- OPS -----
+Table TournamentAdminApplication {
+  id String [pk]
+  userId String [ref: > User.id]
+  message String
+  status String
+  reviewedBy String [ref: > User.id]
+}
+
+Table EventOrganizer {
+  id String [pk]
+  eventId String [ref: > Event.id]
+  userId String [ref: > User.id]
+  role String
+}
+
+Table EventSubmission {
+  id String [pk]
+  eventId String [ref: > Event.id]
+  authorId String [ref: > User.id]
+  title String
+  type String
+  status String
+  reviewerId String [ref: > User.id]
+}
+
+Table StaffMessage {
+  id String [pk]
+  body String
+  fromUserId String [ref: > User.id]
+  submissionId String [ref: > EventSubmission.id]
+  applicationId String [ref: > TournamentAdminApplication.id]
+}
+
+// ----- CMS / COMMUNITY -----
+Table NewsArticle {
+  id String [pk]
+  slug String [unique]
+  category String
+  coverImage String
+  published Boolean
+  authorId String [ref: > User.id]
+}
+
+Table NewsTranslation {
+  id String [pk]
+  articleId String [ref: > NewsArticle.id]
+  locale String // be ru en
+  title String
+  excerpt String
+  content String
+}
+
+Table Comment {
+  id String [pk]
+  userId String [ref: > User.id]
+  newsId String [ref: > NewsArticle.id]
+  matchId String [ref: > Match.id]
+  body String
+  hidden Boolean
+}
+
+Table ForumCategory {
+  id String [pk]
+  slug String [unique]
+  name String
+  order_ Int [name: "order"]
+}
+
+Table ForumThread {
+  id String [pk]
+  categoryId String [ref: > ForumCategory.id]
+  authorId String [ref: > User.id]
+  title String
+}
+
+Table ForumPost {
+  id String [pk]
+  threadId String [ref: > ForumThread.id]
+  authorId String [ref: > User.id]
+  body String
+}
+
+Table GalleryAlbum {
+  id String [pk]
+  slug String [unique]
+  title String
+  eventId String [ref: > Event.id]
+  teamId String [ref: > Team.id]
+}
+
+Table GalleryImage {
+  id String [pk]
+  albumId String [ref: > GalleryAlbum.id]
+  url String
+  order_ Int [name: "order"]
+}
+
+Table Stream {
+  id String [pk]
+  title String
+  platform String
+  url String
+  isLive Boolean
+}
+
+Table Report {
+  id String [pk]
+  reporterId String [ref: > User.id]
+  targetType String
+  targetId String
+  reason String
+  status String
+  resolverId String [ref: > User.id]
+}
+
+Table Notification {
+  id String [pk]
+  userId String [ref: > User.id]
+  type String
+  title String
+  read Boolean
+}
+
+Table Favorite {
+  id String [pk]
+  userId String [ref: > User.id]
+  matchId String [ref: > Match.id]
+  teamId String [ref: > Team.id]
+  playerId String [ref: > Player.id]
+}
+
+// ----- PRODUCT -----
+Table FantasyLeague {
+  id String [pk]
+  eventId String [unique, ref: - Event.id]
+  name String
+  budget Int
+}
+
+Table FantasyTeam {
+  id String [pk]
+  leagueId String [ref: > FantasyLeague.id]
+  userId String [ref: > User.id]
+  name String
+  points Float
+}
+
+Table FantasyPick {
+  id String [pk]
+  fantasyTeamId String [ref: > FantasyTeam.id]
+  playerId String [ref: > Player.id]
+  cost Int
+}
+
+Table BettingOdd {
+  id String [pk]
+  matchId String [ref: > Match.id]
+  bookmaker String
+  team1Odd Float
+  team2Odd Float
+}
+
+Table BettingGuide {
+  id String [pk]
+  title String
+  body String
+  locale String
+}
+
+Table Ad {
+  id String [pk]
+  title String
+  format String
+  status String
+  imageUrl String
+  href String
+  createdById String [ref: > User.id]
+}
+
+Table AdPlacement {
+  id String [pk]
+  adId String [ref: > Ad.id]
+  slot String
+}
+
+Table AdStatDaily {
+  id String [pk]
+  adId String [ref: > Ad.id]
+  date String
+  impressions Int
+  clicks Int
+}
+
+Table FeatureFlag {
+  id String [pk]
+  key String [unique]
+  enabled Boolean
+}
+
+Table AuditLog {
+  id String [pk]
+  actorId String [ref: > User.id]
+  action String
+  meta String
+  createdAt DateTime
+}

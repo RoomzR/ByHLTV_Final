@@ -1,0 +1,32 @@
+{
+  "name": "byhltv",
+  "private": true,
+  "packageManager": "npm@11.13.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev --parallel --filter=@byhltv/web --filter=@byhltv/api",
+    "dev:web": "npm run dev --workspace=@byhltv/web",
+    "dev:api": "npm run dev --workspace=@byhltv/api",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "db:generate": "npm run generate --workspace=@byhltv/database",
+    "db:migrate": "npm run migrate --workspace=@byhltv/database",
+    "db:push": "npm run push --workspace=@byhltv/database",
+    "db:seed": "npm run seed --workspace=@byhltv/database",
+    "db:studio": "npm run studio --workspace=@byhltv/database",
+    "smoke": "node tooling/scripts/smoke.mjs",
+    "bootstrap:db": "node tooling/scripts/bootstrap-db.mjs",
+    "sync:bel-media": "node tooling/scripts/sync-belcs2-media.mjs"
+  },
+  "devDependencies": {
+    "image-size": "^2.0.2",
+    "playwright": "^1.63.0",
+    "pptxgenjs": "^4.0.1",
+    "sharp": "^0.35.4",
+    "turbo": "^2.5.4",
+    "typescript": "^5.8.3"
+  }
+}

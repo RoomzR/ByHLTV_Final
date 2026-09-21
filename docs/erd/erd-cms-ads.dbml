@@ -1,0 +1,105 @@
+// CMS + ADS — free dbdiagram.io
+
+Table User {
+  id String [pk]
+  email String [unique]
+  username String [unique]
+  role String
+}
+
+Table NewsArticle {
+  id String [pk]
+  slug String [unique]
+  category String
+  coverImage String
+  published Boolean
+  authorId String [ref: > User.id]
+}
+
+Table NewsTranslation {
+  id String [pk]
+  articleId String [ref: > NewsArticle.id]
+  locale String
+  title String
+  excerpt String
+  content String
+}
+
+Table Comment {
+  id String [pk]
+  userId String [ref: > User.id]
+  newsId String [ref: > NewsArticle.id]
+  matchId String
+  body String
+}
+
+Table ForumCategory {
+  id String [pk]
+  slug String [unique]
+  name String
+}
+
+Table ForumThread {
+  id String [pk]
+  categoryId String [ref: > ForumCategory.id]
+  authorId String [ref: > User.id]
+  title String
+}
+
+Table ForumPost {
+  id String [pk]
+  threadId String [ref: > ForumThread.id]
+  authorId String [ref: > User.id]
+  body String
+}
+
+Table GalleryAlbum {
+  id String [pk]
+  slug String [unique]
+  title String
+}
+
+Table GalleryImage {
+  id String [pk]
+  albumId String [ref: > GalleryAlbum.id]
+  url String
+}
+
+Table Ad {
+  id String [pk]
+  title String
+  format String
+  status String
+  imageUrl String
+  href String
+  createdById String [ref: > User.id]
+}
+
+Table AdPlacement {
+  id String [pk]
+  adId String [ref: > Ad.id]
+  slot String
+}
+
+Table AdStatDaily {
+  id String [pk]
+  adId String [ref: > Ad.id]
+  date String
+  impressions Int
+  clicks Int
+}
+
+Table FantasyLeague {
+  id String [pk]
+  eventId String [unique]
+  name String
+  budget Int
+}
+
+Table FantasyTeam {
+  id String [pk]
+  leagueId String [ref: > FantasyLeague.id]
+  userId String [ref: > User.id]
+  name String
+  points Float
+}

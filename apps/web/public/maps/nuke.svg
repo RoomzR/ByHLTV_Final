@@ -1,0 +1,23 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a0a"/>
+      <stop offset="50%" stop-color="#2d2a12"/>
+      <stop offset="100%" stop-color="#0f0e08"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="35%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#c4a035" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#c4a035" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <rect width="640" height="360" fill="url(#glow)"/>
+  <g stroke="#c4a035" stroke-opacity="0.12" fill="none">
+    <path d="M0 90 H640 M0 180 H640 M0 270 H640 M160 0 V360 M320 0 V360 M480 0 V360"/>
+    <circle cx="320" cy="180" r="70"/><circle cx="320" cy="180" r="120"/>
+  </g>
+  <path d="M80 280 L200 120 L280 200 L360 80 L480 220 L560 140" stroke="#8a7a30" stroke-width="2" fill="none" opacity="0.35"/>
+  <rect x="240" y="140" width="160" height="80" fill="none" stroke="#c4a035" stroke-opacity="0.25" stroke-width="1.5"/>
+  <text x="320" y="200" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="56" font-weight="900" fill="#c4a035" letter-spacing="8">NUKE</text>
+  <text x="320" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#8a7a30" letter-spacing="4" opacity="0.7">INDUSTRIAL COMPLEX</text>
+</svg>

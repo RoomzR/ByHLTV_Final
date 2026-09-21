@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>ByHLTV Role Dividers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Sora:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b0b0b;
+      --bg2: #121212;
+      --green: #8BB41A;
+      --live: #C41E3A;
+      --text: #ececec;
+      --muted: #8a8a8a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #000;
+      font-family: Sora, system-ui, sans-serif;
+      color: var(--text);
+    }
+    .slide {
+      width: 1920px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 90% 70% at 50% 40%, #1a1a1a 0%, transparent 55%),
+        linear-gradient(160deg, #121212 0%, #0b0b0b 55%, #080808 100%);
+    }
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(139, 180, 26, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139, 180, 26, 0.04) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 20%, transparent 75%);
+      pointer-events: none;
+    }
+    .slide::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 8px;
+      background: var(--accent, var(--green));
+      box-shadow: 0 0 40px color-mix(in srgb, var(--accent, var(--green)) 45%, transparent);
+    }
+    .frame {
+      position: absolute;
+      inset: 48px;
+      border: 1px solid rgba(139, 180, 26, 0.18);
+      pointer-events: none;
+    }
+    .frame::before,
+    .frame::after {
+      content: "";
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      border: 2px solid var(--accent, var(--green));
+    }
+    .frame::before {
+      top: -1px;
+      left: -1px;
+      border-right: none;
+      border-bottom: none;
+    }
+    .frame::after {
+      bottom: -1px;
+      right: -1px;
+      border-left: none;
+      border-top: none;
+    }
+    .brand {
+      position: absolute;
+      top: 72px;
+      left: 96px;
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--green);
+    }
+    .role-tag {
+      position: absolute;
+      top: 72px;
+      right: 96px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid #2a2a2a;
+      padding: 10px 16px;
+    }
+    .center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px;
+      z-index: 2;
+    }
+    .kicker {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--accent, var(--green));
+      margin-bottom: 28px;
+    }
+    h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 700;
+      font-size: 120px;
+      line-height: 0.92;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      color: #f2f2f2;
+      max-width: 1600px;
+    }
+    .sub {
+      margin-top: 36px;
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: #c8c8c8;
+    }
+    .rule {
+      width: 120px;
+      height: 3px;
+      background: var(--accent, var(--green));
+      margin: 28px auto 0;
+    }
+    .footer {
+      position: absolute;
+      left: 96px;
+      right: 96px;
+      bottom: 64px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #666;
+      z-index: 2;
+    }
+    .footer b { color: var(--green); font-weight: 600; }
+    .glow {
+      position: absolute;
+      width: 720px;
+      height: 720px;
+      border-radius: 50%;
+      background: radial-gradient(circle, color-mix(in srgb, var(--accent, var(--green)) 16%, transparent) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -52%);
+      pointer-events: none;
+    }
+    .slide[data-accent="live"] { --accent: var(--live); }
+    .slide[data-accent="live"] .brand { color: var(--live); }
+    .slide[data-accent="live"] .frame {
+      border-color: rgba(196, 30, 58, 0.22);
+    }
+  </style>
+</head>
+<body>
+  <div class="slide" id="01-public" data-file="01-public.png">
+    <div class="glow"></div>
+    <div class="frame"></div>
+    <div class="brand">ByHLTV</div>
+    <div class="role-tag">Role 01 · Public</div>
+    <div class="center">
+      <div class="kicker">Зритель</div>
+      <h1>Публичный сайт</h1>
+      <div class="rule"></div>
+      <div class="sub">Матчи · новости · рейтинги</div>
+    </div>
+    <div class="footer"><span>Presentation divider</span><span><b>PUBLIC</b> access</span></div>
+  </div>
+
+  <div class="slide" id="02-user" data-file="02-user.png">
+    <div class="glow"></div>
+    <div class="frame"></div>
+    <div class="brand">ByHLTV</div>
+    <div class="role-tag">Role 02 · User</div>
+    <div class="center">
+      <div class="kicker">User</div>
+      <h1>Пользователь</h1>
+      <div class="rule"></div>
+      <div class="sub">Профиль · комментарии · fantasy</div>
+    </div>
+    <div class="footer"><span>Presentation divider</span><span><b>USER</b> role</span></div>
+  </div>
+
+  <div class="slide" id="03-editor" data-file="03-editor.png">
+    <div class="glow"></div>
+    <div class="frame"></div>
+    <div class="brand">ByHLTV</div>
+    <div class="role-tag">Role 03 · Editor</div>
+    <div class="center">
+      <div class="kicker">Editor</div>
+      <h1>Редактор</h1>
+      <div class="rule"></div>
+      <div class="sub">Новости · игроки · CMS</div>
+    </div>
+    <div class="footer"><span>Presentation divider</span><span><b>EDITOR</b> role</span></div>
+  </div>
+
+  <div class="slide" id="04-moderator" data-file="04-moderator.png" data-accent="live">
+    <div class="glow"></div>
+    <div class="frame"></div>
+    <div class="brand">ByHLTV</div>
+    <div class="role-tag">Role 04 · Moderator</div>
+    <div class="center">
+      <div class="kicker">Moderator</div>
+      <h1>Модератор</h1>
+      <div class="rule"></div>
+      <div class="sub">Жалобы · форум · баны</div>
+    </div>
+    <div class="footer"><span>Presentation divider</span><span style="color:#C41E3A;font-weight:600">MODERATOR</span></div>
+  </div>
+
+  <div class="slide" id="05-tournament-admin" data-file="05-tournament-admin.png">
+    <div class="glow"></div>
+    <div class="frame"></div>
+    <div class="brand">ByHLTV</div>
+    <div class="role-tag">Role 05 · Tournament</div>
+    <div class="center">
+      <div class="kicker">Ops · Live</div>
+      <h1 style="font-size:96px">Tournament Admin</h1>
+      <div class="rule"></div>
+      <div class="sub">Ивенты · ops · live · демки</div>
+    </div>
+    <div class="footer"><span>Presentation divider</span><span><b>TOURNAMENT ADMIN</b></span></div>
+  </div>
+
+  <div class="slide" id="06-admin" data-file="06-admin.png">
+    <div class="glow"></div>
+    <div class="frame"></div>
+    <div class="brand">ByHLTV</div>
+    <div class="role-tag">Role 06 · Admin</div>
+    <div class="center">
+      <div class="kicker">Admin</div>
+      <h1>Admin</h1>
+      <div class="rule"></div>
+      <div class="sub">Пользователи · ads · права</div>
+    </div>
+    <div class="footer"><span>Presentation divider</span><span><b>ADMIN</b> role</span></div>
+  </div>
+
+  <div class="slide" id="07-superadmin" data-file="07-superadmin.png" data-accent="live">
+    <div class="glow"></div>
+    <div class="frame"></div>
+    <div class="brand">ByHLTV</div>
+    <div class="role-tag">Role 07 · Superadmin</div>
+    <div class="center">
+      <div class="kicker">Full access</div>
+      <h1>Superadmin</h1>
+      <div class="rule"></div>
+      <div class="sub">Полный контроль платформы</div>
+    </div>
+    <div class="footer"><span>Presentation divider</span><span style="color:#C41E3A;font-weight:600">SUPERADMIN</span></div>
+  </div>
+</body>
+</html>

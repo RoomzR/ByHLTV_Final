@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ByHLTV — Презентация v2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Sora:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #121212;
+      --green: #8bb41a;
+      --live: #c41e3a;
+      --text: #ececec;
+      --muted: #8a8a8a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      background: #0a0a0a;
+      color: var(--text);
+      font-family: Sora, system-ui, sans-serif;
+      overflow: hidden;
+      cursor: pointer;
+      user-select: none;
+    }
+    .deck { height: 100%; width: 100%; position: relative; }
+    .slide {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: var(--bg);
+    }
+    .slide.active { display: block; }
+    .shot {
+      position: absolute;
+      inset: 0 0 2.6rem 0;
+      width: 100%;
+      height: calc(100% - 2.6rem);
+      object-fit: contain;
+      object-position: center center;
+      background: #0a0a0a;
+    }
+    .caption {
+      position: absolute;
+      left: 1rem;
+      right: 1rem;
+      bottom: 2.6rem;
+      z-index: 5;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1rem;
+      pointer-events: none;
+    }
+    .caption span {
+      font-size: clamp(0.75rem, 1.2vw, 0.95rem);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: #fff;
+      background: rgba(10,10,10,0.72);
+      border-left: 3px solid var(--green);
+      padding: 0.45rem 0.75rem;
+      max-width: min(70vw, 42rem);
+      backdrop-filter: blur(6px);
+    }
+    .caption .role {
+      border-left-color: var(--live);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.68rem;
+      color: #ffd0d8;
+    }
+    .info {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(1.5rem, 6vw, 5rem);
+      border-left: 6px solid var(--green);
+    }
+    .info .kicker {
+      color: var(--green);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+    .info h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(2.2rem, 6vw, 3.8rem);
+      line-height: 1.05;
+      margin-bottom: 1.4rem;
+    }
+    .info ul {
+      list-style: none;
+      max-width: 42rem;
+      display: grid;
+      gap: 0.75rem;
+    }
+    .info li {
+      position: relative;
+      padding-left: 1.2rem;
+      color: #d6d6d6;
+      font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+      line-height: 1.45;
+    }
+    .info li::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0.55em;
+      width: 0.45rem; height: 0.45rem;
+      border-radius: 50%;
+      background: var(--green);
+    }
+    .title-panel {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center start;
+      padding: clamp(1.5rem, 6vw, 5rem);
+      border-left: 6px solid var(--green);
+    }
+    .title-panel h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(3rem, 10vw, 7rem);
+      line-height: 0.9;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+    }
+    .title-panel .sub {
+      margin-top: 1rem;
+      color: var(--green);
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      font-weight: 600;
+    }
+    .title-panel .note {
+      margin-top: 0.6rem;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+    .collage {
+      position: absolute;
+      inset: 0 0 2.6rem 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: #000;
+    }
+    .collage img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center top;
+      background: #0a0a0a;
+    }
+    .hud {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      z-index: 20;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.55rem 0.9rem;
+      background: rgba(8,8,8,0.88);
+      border-top: 1px solid #222;
+      font-size: 0.7rem;
+      color: var(--muted);
+      pointer-events: none;
+    }
+    .hud b { color: var(--green); font-weight: 600; }
+    .progress {
+      position: fixed; top: 0; left: 0; height: 2px;
+      background: var(--green); z-index: 30;
+      transition: width 0.15s ease;
+    }
+    .hint {
+      position: fixed;
+      top: 0.7rem; right: 0.9rem;
+      z-index: 25;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+  <div class="hint">← → · клик</div>
+  <div class="deck" id="deck"></div>
+  <div class="hud">
+    <span><b>ByHLTV</b> · Belarus CS2 · full-page v2</span>
+    <span id="counter">1 / 1</span>
+  </div>
+
+  <script>
+    const slides = [
+      { title: true, heading: "ByHLTV", sub: "Белорусский HLTV для CS2", note: "Портал · Live · CMS · Реклама" },
+      {
+        info: true,
+        kicker: "Блок A · Продукт",
+        heading: "Что это",
+        bullets: [
+          "Публичный портал CS2: матчи, новости, рейтинг, игроки, команды",
+          "Live-трансляции и операторская консоль (GSI / demos)",
+          "CMS и роли: редактор, модератор, организатор, админ",
+          "Рекламные слоты и аналитика показов",
+        ],
+      },
+      { file: "screens/10-home.png", caption: "Главная · full page" },
+      {
+        info: true,
+        kicker: "Блок B · Публичный сайт",
+        heading: "Публичный сайт",
+        bullets: [
+          "Навигация: матчи → результаты → live → турниры",
+          "Контент: новости, рейтинг, игроки, команды, статистика, награды",
+          "Сообщество: галерея, форумы, fantasy, betting, вход",
+        ],
+      },
+      { file: "screens/11-matches.png", caption: "Матчи" },
+      { file: "screens/12-match-detail.png", caption: "Карточка матча · статистика" },
+      { file: "screens/13-results.png", caption: "Результаты" },
+      { file: "screens/14-live.png", caption: "Live" },
+      { file: "screens/15-events.png", caption: "Турниры" },
+      { file: "screens/16-event-detail.png", caption: "BEL Season 2" },
+      { file: "screens/17-news.png", caption: "Новости" },
+      { file: "screens/18-article.png", caption: "Статья" },
+      { file: "screens/19-ranking.png", caption: "Рейтинг" },
+      { file: "screens/20-players.png", caption: "Игроки" },
+      { file: "screens/21-player-profile.png", caption: "Профиль игрока" },
+      { file: "screens/22-teams.png", caption: "Команды" },
+      { file: "screens/23-team.png", caption: "Команда" },
+      { file: "screens/24-stats.png", caption: "Статистика" },
+      { file: "screens/25-top20.png", caption: "Top-20" },
+      { file: "screens/26-mvp.png", caption: "MVP" },
+      { file: "screens/27-gallery.png", caption: "Галерея" },
+      { file: "screens/28-forums.png", caption: "Форумы" },
+      { file: "screens/29-fantasy.png", caption: "Fantasy" },
+      { file: "screens/30-betting.png", caption: "Betting" },
+      { file: "screens/31-login.png", caption: "Вход" },
+      {
+        info: true,
+        kicker: "Блок C · USER",
+        heading: "Роль USER",
+        bullets: [
+          "Личный кабинет фаната: профиль и настройки",
+          "Авторизованный просмотр публичного сайта",
+        ],
+      },
+      { file: "screens/40-user-profile.png", caption: "USER · профиль", role: "USER" },
+      { file: "screens/41-user-home.png", caption: "USER · главная", role: "USER" },
+      {
+        info: true,
+        kicker: "Блок D · EDITOR",
+        heading: "Editor CMS",
+        bullets: [
+          "Новости, игроки, матчи, награды, галерея",
+          "Доступ к ops без полного /admin",
+          "Точки входа: /admin/news, /admin/players, …",
+        ],
+      },
+      { file: "screens/50-editor-news.png", caption: "EDITOR · новости", role: "EDITOR" },
+      { file: "screens/51-editor-players.png", caption: "EDITOR · игроки", role: "EDITOR" },
+      { file: "screens/52-editor-matches.png", caption: "EDITOR · матчи", role: "EDITOR" },
+      { file: "screens/53-editor-awards.png", caption: "EDITOR · награды", role: "EDITOR" },
+      { file: "screens/54-editor-gallery.png", caption: "EDITOR · галерея", role: "EDITOR" },
+      { file: "screens/55-editor-ops.png", caption: "EDITOR · ops", role: "EDITOR" },
+      {
+        info: true,
+        kicker: "Блок E · MODERATOR",
+        heading: "Модерация",
+        bullets: [
+          "Очередь жалоб и модерация контента",
+          "Кабинет: /mod",
+        ],
+      },
+      { file: "screens/60-mod.png", caption: "MOD · модерация", role: "MOD" },
+      {
+        info: true,
+        kicker: "Блок F · Tournament Admin",
+        heading: "Workflow организатора",
+        bullets: [
+          "Заявки TO, ops-кабинет, live-консоль матча",
+          "Демо / GSI на /ops и /ops/live/{slug}",
+        ],
+      },
+      { file: "screens/70-to-ops.png", caption: "TO · ops", role: "TO" },
+      { file: "screens/71-to-live.png", caption: "TO · live console", role: "TO" },
+      {
+        info: true,
+        kicker: "Блок G · ADMIN",
+        heading: "Admin / Superadmin",
+        bullets: [
+          "Пользователи, реклама, аналитика, заявки TO",
+          "Команды и рейтинг в CMS",
+          "Полный доступ к /admin",
+        ],
+      },
+      { file: "screens/80-admin.png", caption: "ADMIN · CMS", role: "ADMIN" },
+      { file: "screens/81-admin-users.png", caption: "ADMIN · пользователи", role: "ADMIN" },
+      { file: "screens/82-admin-ads.png", caption: "ADMIN · реклама", role: "ADMIN" },
+      { file: "screens/83-admin-ads-analytics.png", caption: "ADMIN · ads analytics", role: "ADMIN" },
+      { file: "screens/84-admin-applications.png", caption: "ADMIN · заявки TO", role: "ADMIN" },
+      { file: "screens/85-admin-teams.png", caption: "ADMIN · команды", role: "ADMIN" },
+      { file: "screens/86-admin-ranking.png", caption: "ADMIN · рейтинг", role: "ADMIN" },
+      {
+        info: true,
+        kicker: "Блок H · Итог",
+        heading: "Стек и следующий шаг",
+        bullets: [
+          "Next.js · NestJS · Prisma · Socket.IO · demoparser",
+          "Роли: USER / EDITOR / MOD / TO / ADMIN",
+          "Контакты: [placeholder] · demo localhost:3000",
+        ],
+      },
+      {
+        collage: ["screens/10-home.png", "screens/71-to-live.png"],
+        caption: "Публичный сайт + ops live — один продукт",
+      },
+    ];
+
+    const deck = document.getElementById("deck");
+    const counter = document.getElementById("counter");
+    const progress = document.getElementById("progress");
+    let i = 0;
+
+    function render() {
+      deck.innerHTML = "";
+      slides.forEach((s, idx) => {
+        const el = document.createElement("section");
+        el.className = "slide" + (idx === i ? " active" : "");
+        if (s.title) {
+          el.innerHTML =
+            `<div class="title-panel"><div>` +
+            `<h1>${s.heading}</h1>` +
+            `<div class="sub">${s.sub}</div>` +
+            `<div class="note">${s.note}</div>` +
+            `</div></div>`;
+        } else if (s.info) {
+          el.innerHTML =
+            `<div class="info">` +
+            `<div class="kicker">${s.kicker}</div>` +
+            `<h1>${s.heading}</h1>` +
+            `<ul>${s.bullets.map((b) => `<li>${b}</li>`).join("")}</ul>` +
+            `</div>`;
+        } else if (s.collage) {
+          el.innerHTML =
+            `<div class="collage">` +
+            s.collage.map((f) => `<img src="${f}" alt="" />`).join("") +
+            `</div>` +
+            `<div class="caption"><span>${s.caption}</span></div>`;
+        } else {
+          const role = s.role ? `<span class="role">${s.role}</span>` : "";
+          el.innerHTML =
+            `<img class="shot" src="${s.file}" alt="" />` +
+            `<div class="caption"><span>${s.caption}</span>${role}</div>`;
+        }
+        deck.appendChild(el);
+      });
+      counter.textContent = `${i + 1} / ${slides.length}`;
+      progress.style.width = `${((i + 1) / slides.length) * 100}%`;
+    }
+
+    function go(n) {
+      i = (n + slides.length) % slides.length;
+      render();
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") {
+        e.preventDefault();
+        go(i + 1);
+      } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
+        e.preventDefault();
+        go(i - 1);
+      } else if (e.key === "Home") go(0);
+      else if (e.key === "End") go(slides.length - 1);
+    });
+
+    document.body.addEventListener("click", (e) => {
+      const x = e.clientX / window.innerWidth;
+      go(x < 0.28 ? i - 1 : i + 1);
+    });
+
+    render();
+  </script>
+</body>
+</html>
